@@ -211,8 +211,10 @@ module ActiveRecord
       end
 
       # Close then reopen the connection.
-      def reconnect!
-        super
+      def reconnect!(**options)
+        clear_cache!(new_connection: true)
+        reset_transaction
+
         @raw_connection.reset
         configure_connection
         reload_type_map
